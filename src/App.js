@@ -46,13 +46,25 @@ class App {
     }
 
     fetchWeather() {
-        return fetchData(`https://api.openweathermap.org/data/2.5/forecast?appid=${APPID}&q=${this.query}&units=metrics`,
+        return fetchData(`https://api.openweathermap.org/data/2.5/forecast?appid=${APPID}&q=${this.query}&units=metric`,
             {
                 startCallback: () => this.startCallback(),
                 catchCallback: (error) => this.catchCallback(error),
                 endCallback: () => this.endCallback()
             })
             .then((data) => this.setData(data))
+    }
+
+    transformData(data) {
+        const list = data && data.list
+        const listMapped = list && list.map((dataItem) => {
+            const dt = dataItem && dataItem.dt
+            const timestamp = dt && dt * 1000
+            const temp = dataItem && dataItem.main && dataItem.main.temp
+
+            return {timestamp, temp}
+        })
+        return listMapped
     }
 
     onImput(event) {
@@ -90,7 +102,11 @@ class App {
             return this.container
         }
 
-        const text = document.createTextNode(JSON.stringify(this.data))
+        const text = document.createTextNode(
+            JSON.stringify(
+                this.transformData(this.data)
+            )
+        )
         this.container.appendChild(text)
 
         return this.container
