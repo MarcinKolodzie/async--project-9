@@ -1,6 +1,7 @@
 import Input from './Input'
 import Button from './Button'
 import Message from './Message'
+import Chart from './Chart'
 
 import fetchData from './fetchData'
 
@@ -62,7 +63,7 @@ class App {
             const timestamp = dt && dt * 1000
             const temp = dataItem && dataItem.main && dataItem.main.temp
 
-            return {timestamp, temp}
+            return { timestamp, temp }
         })
         return listMapped
     }
@@ -101,13 +102,11 @@ class App {
             this.container.appendChild(messageElement.render())
             return this.container
         }
-
-        const text = document.createTextNode(
-            JSON.stringify(
-                this.transformData(this.data)
-            )
+        const transformedData = this.transformData(this.data)
+        const chartElement = new Chart(transformedData
         )
-        this.container.appendChild(text)
+
+        this.container.appendChild(chartElement.render())
 
         return this.container
     }
