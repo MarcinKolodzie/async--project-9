@@ -1,9 +1,9 @@
 import Input from './Input'
-import Button from './Button'
 import Message from './Message'
 import Chart from './Chart'
 
 import fetchData from './fetchData'
+import debounce from './debounce'
 
 const APPID = '10bf9616e88841d85fe06bbf6aadc634'
 
@@ -17,6 +17,8 @@ class App {
         this.hasError = null
 
         this.data = null
+
+        this.fetchWeatherDebounced = debounce(1000)(this.fetchWeather)
 
         this.init()
     }
@@ -56,6 +58,10 @@ class App {
             .then((data) => this.setData(data))
     }
 
+    fetchWeatherDebounced(){
+
+    }
+
     transformData(data) {
         const list = data && data.list
         const listMapped = list && list.map((dataItem) => {
@@ -70,11 +76,9 @@ class App {
 
     onImput(event) {
         this.query = event.target.value
-        this.render()
-    }
-
-    onClick() {
-        this.fetchWeather()
+        this.isLoading = true
+        this.fetchWeatherDebounced()
+        // debounce(1000)(this.fetchWeather.bind(this))()
         this.render()
     }
 
@@ -86,10 +90,8 @@ class App {
         this.container.innerHTML = ''
 
         const input = new Input(this.query, (event) => this.onImput(event))
-        const button = new Button('fetch weather', () => this.onClick())
 
         this.container.appendChild(input.render())
-        this.container.appendChild(button.render())
 
         if (this.hasError) {
             const messageElement = new Message('Error ocured!')
