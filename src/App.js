@@ -1,4 +1,5 @@
 import Input from './Input'
+import Map from './Map'
 import Message from './Message'
 import Chart from './Chart'
 
@@ -68,8 +69,9 @@ class App {
             const dt = dataItem && dataItem.dt
             const timestamp = dt && dt * 1000
             const temp = dataItem && dataItem.main && dataItem.main.temp
+            const feelsLike = dataItem && dataItem.main && dataItem.main.feels_like
 
-            return { timestamp, temp }
+            return { timestamp, temp, feelsLike }
         })
         return listMapped
     }
@@ -104,6 +106,13 @@ class App {
             this.container.appendChild(messageElement.render())
             return this.container
         }
+
+        const lat = this.data && this.data.city && this.data.city.coord && this.data.city.coord.lat
+        const lng = this.data && this.data.city && this.data.city.coord && this.data.city.coord.lon
+        const mapElement = new Map(lng, lat)
+        this.container.appendChild(mapElement.render())
+
+
         const transformedData = this.transformData(this.data)
         const chartElement = new Chart(transformedData
         )
