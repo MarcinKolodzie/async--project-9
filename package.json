@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "chart.js": "^2.9.4",
+    "leaflet": "^1.9.2",
     "parse5": "^7.1.1",
     "react": "^18.2.0",
     "react-scripts": "5.0.1"
