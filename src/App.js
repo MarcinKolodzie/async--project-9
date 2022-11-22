@@ -19,7 +19,7 @@ class App {
 
         this.data = null
 
-        this.fetchWeatherDebounced = debounce(1000)(this.fetchWeather)
+        this.fetchWeatherDebounced = debounce(300)(this.fetchWeather)
 
         this.init()
     }
@@ -87,6 +87,8 @@ class App {
     render() {
         if (this.container === null) {
             this.container = document.createElement('div')
+            this.container.style.maxWidth = '768px'
+            this.container.style.margin = '0 auto'
         }
 
         this.container.innerHTML = ''

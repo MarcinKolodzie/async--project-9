@@ -13,7 +13,7 @@ class Map {
 
         const div = document.createElement('div')
         div.style.width = '100%'
-        div.style.height = '400px'
+        div.style.height = '200px'
 
         setTimeout(() => {
 
